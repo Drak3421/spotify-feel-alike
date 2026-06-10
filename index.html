@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DarkMusic Studio</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+  darkMode: "class"
+}
+</script>
+
+<style>
+body{
+    background:#050505;
+}
+
+.glass{
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.glow{
+    box-shadow:0 0 30px rgba(30,215,96,.15);
+}
+</style>
+
+</head>
+
+<body class="dark text-white">
+
+<div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-black border-r border-zinc-900">
+
+        <div class="p-8">
+
+            <h1 class="text-4xl font-black text-green-500">
+                DarkMusic
+            </h1>
+
+            <p class="text-zinc-500">
+                Upload Studio
+            </p>
+
+        </div>
+
+        <nav class="px-5 space-y-2">
+
+            <button class="w-full text-left p-4 rounded-xl hover:bg-zinc-900">
+                📊 Dashboard
+            </button>
+
+            <button class="w-full text-left p-4 rounded-xl hover:bg-zinc-900">
+                🎵 Library
+            </button>
+
+            <button class="w-full text-left p-4 rounded-xl bg-zinc-900">
+                ⬆ Upload
+            </button>
+
+            <button class="w-full text-left p-4 rounded-xl hover:bg-zinc-900">
+                ⚙ Settings
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-8">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+
+            <input
+            id="search"
+            placeholder="Search songs..."
+            class="w-[500px] bg-zinc-900 border border-zinc-800 rounded-full px-5 py-3 outline-none">
+
+            <button
+            id="themeBtn"
+            class="bg-zinc-900 px-5 py-3 rounded-full">
+            🌙
+            </button>
+
+        </div>
+
+        <!-- Stats -->
+        <div class="grid md:grid-cols-3 gap-5 mb-8">
+
+            <div class="glass rounded-3xl p-6 glow">
+
+                <p class="text-zinc-400">
+                    Total Songs
+                </p>
+
+                <h2
+                id="songCount"
+                class="text-5xl font-black mt-3">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="glass rounded-3xl p-6">
+
+                <p class="text-zinc-400">
+                    Albums
+                </p>
+
+                <h2
+                id="albumCount"
+                class="text-5xl font-black mt-3">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="glass rounded-3xl p-6">
+
+                <p class="text-zinc-400">
+                    Total Plays
+                </p>
+
+                <h2
+                id="playCount"
+                class="text-5xl font-black mt-3">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+        <!-- Upload -->
+        <div class="glass rounded-3xl p-8 mb-8">
+
+            <h2 class="text-3xl font-bold mb-2">
+                Upload Studio
+            </h2>
+
+            <p class="text-zinc-500 mb-8">
+                Upload your music and manage your library.
+            </p>
+
+            <div
+            class="border-2 border-dashed border-zinc-700 rounded-3xl p-16 text-center">
+
+                <div class="text-7xl mb-4">
+                    ☁
+                </div>
+
+                <h3 class="text-2xl font-bold">
+                    Drag & Drop MP3
+                </h3>
+
+                <p class="text-zinc-500 mt-2">
+                    or choose files below
+                </p>
+
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mt-8">
+
+                <input
+                id="title"
+                placeholder="Song Title"
+                class="bg-zinc-900 p-4 rounded-xl">
+
+                <input
+                id="artist"
+                placeholder="Artist"
+                class="bg-zinc-900 p-4 rounded-xl">
+
+                <input
+                id="album"
+                placeholder="Album"
+                class="bg-zinc-900 p-4 rounded-xl">
+
+                <select
+                id="genre"
+                class="bg-zinc-900 p-4 rounded-xl">
+
+                    <option>Pop</option>
+                    <option>Rock</option>
+                    <option>Hip Hop</option>
+                    <option>Electronic</option>
+
+                </select>
+
+                <input
+                id="cover"
+                type="file"
+                accept="image/*"
+                class="bg-zinc-900 p-4 rounded-xl">
+
+                <input
+                id="audio"
+                type="file"
+                accept=".mp3"
+                class="bg-zinc-900 p-4 rounded-xl">
+
+            </div>
+
+            <button
+            onclick="uploadSong()"
+            class="mt-8 bg-green-500 hover:bg-green-400 text-black font-bold px-10 py-4 rounded-full">
+                Upload Track
+            </button>
+
+        </div>
+
+        <!-- Songs Table -->
+        <div class="glass rounded-3xl p-8">
+
+            <h2 class="text-2xl font-bold mb-6">
+                My Songs
+            </h2>
+
+            <div class="overflow-auto">
+
+                <table class="w-full">
+
+                    <thead>
+                        <tr class="text-zinc-400 border-b border-zinc-800">
+
+                            <th class="text-left p-4">Title</th>
+                            <th class="text-left p-4">Artist</th>
+                            <th class="text-left p-4">Album</th>
+                            <th class="text-left p-4">Genre</th>
+                            <th class="text-left p-4">Plays</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody id="songsTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+let songs = [];
+let albums = new Set();
+
+function uploadSong(){
+
+    const title =
+    document.getElementById("title").value;
+
+    const artist =
+    document.getElementById("artist").value;
+
+    const album =
+    document.getElementById("album").value;
+
+    const genre =
+    document.getElementById("genre").value;
+
+    if(!title || !artist){
+        alert("Fill all required fields");
+        return;
+    }
+
+    const song = {
+        title,
+        artist,
+        album,
+        genre,
+        plays:0
+    };
+
+    songs.push(song);
+
+    albums.add(album);
+
+    renderSongs();
+    updateStats();
+
+}
+
+function renderSongs(){
+
+    const table =
+    document.getElementById("songsTable");
+
+    table.innerHTML = "";
+
+    songs.forEach(song=>{
+
+        table.innerHTML += `
+        <tr class="border-b border-zinc-900">
+
+            <td class="p-4">${song.title}</td>
+            <td class="p-4">${song.artist}</td>
+            <td class="p-4">${song.album}</td>
+            <td class="p-4">${song.genre}</td>
+            <td class="p-4">${song.plays}</td>
+
+        </tr>
+        `;
+    });
+}
+
+function updateStats(){
+
+    document.getElementById("songCount")
+    .innerText = songs.length;
+
+    document.getElementById("albumCount")
+    .innerText = albums.size;
+
+    let plays =
+    songs.reduce((a,b)=>a+b.plays,0);
+
+    document.getElementById("playCount")
+    .innerText = plays;
+}
+
+document
+.getElementById("themeBtn")
+.addEventListener("click",()=>{
+
+document.documentElement.classList.toggle("dark");
+
+});
+
+document
+.getElementById("search")
+.addEventListener("input",(e)=>{
+
+const value =
+e.target.value.toLowerCase();
+
+const rows =
+document.querySelectorAll("#songsTable tr");
+
+rows.forEach(row=>{
+
+if(
+row.innerText.toLowerCase()
+.includes(value)
+){
+row.style.display="";
+}else{
+row.style.display="none";
+}
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
